@@ -1,0 +1,191 @@
+// src/pages/SettingsPage.scss
+@use '../_variables.scss';
+
+.container {
+  padding: 3% 4%;
+  animation: fade-slide 0.5s ease-in-out;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+/* Style for the Dark Mode Toggle */
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  font-size: 18px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #4caf50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+.toggle-camera-btn {
+  padding: 10px 20px;
+  border-radius: 12px;
+  background-color: #333;
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.camera-settings {
+  background-color: #ffffffe7;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-width: 600px;  /* Kenglikni kichraytirish */
+
+  .camera-item {
+    margin-bottom: 1.5rem;
+    padding: 15px;
+    background-color: variables.$secondary-color;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    gap: 10px; /* O'rtadagi bo'shliqni yaxshilash */
+
+    .camera-label {
+      font-weight: 500;
+      color: #444;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center; 
+      width: 100%;  
+
+      input {
+        padding: 8px 12px;
+        font-size: 1rem;
+        border-radius: 10px;
+        flex-grow: 1;  
+        border: none; 
+      }
+
+      .save-btn {
+        padding: 10px 12px;
+        font-size: 1rem;
+        border-radius: 10px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #218838;
+        }
+      }
+    }
+
+    .change-btn {
+      padding: 8px 12px;
+      border-radius: 10px;
+      background-color: #007bff;
+      color: #fff;
+      font-weight: 500;
+      border: none;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
+
+.toast-container {
+  color: white;
+  position: fixed;
+  top: 8%;
+  right: 20px;
+  z-index: 11;
+  background-color: #28a745;
+  padding: 10px 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  &.show {
+    opacity: 1;
+  }
+}
+
+.toast-close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+@keyframes fade-slide {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,272 @@
+@use './_variables.scss';
+@use './components/sidebar';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.layout-wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--bg-primary);
+
+  .sidebar-wrapper {
+    width: 120px;
+    background-color: var(--bg-sidebar);
+    color: var(--text-white);
+
+    @media (max-width: 1400px) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 200px;
+      background-color: var(--bg-sidebar);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 1050;
+
+      &.open {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  .overlay {
+    display: none;
+
+    @media (max-width: 1400px) {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1040;
+    }
+  }
+
+  .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary);
+
+    .navbar {
+      height: 60px;
+      background-color: var(--bg-navbar);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .content-scrollable {
+      flex: 1;
+      overflow-y: auto;
+      background-color: var(--bg-content);
+      color: var(--text-primary);
+    }
+  }
+}
+
+// Global dark mode overrides
+body.dark-mode {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+
+  // Card grid wrapper
+  .card-grid-wrapper {
+    background-color: var(--bg-content);
+  }
+
+  // Global card styles
+  .card {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    border: 1px solid var(--border-color);
+
+    .card-header {
+      background-color: var(--bg-secondary) !important;
+      color: var(--text-primary) !important;
+      border-bottom-color: var(--border-color) !important;
+    }
+  }
+
+  // Bootstrap table overrides
+  .table {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+
+    thead.table-dark,
+    .table-dark {
+      background-color: var(--bg-tertiary) !important;
+
+      th {
+        background-color: var(--bg-tertiary) !important;
+        color: var(--text-primary) !important;
+        border-color: var(--border-color) !important;
+      }
+    }
+
+    tbody {
+      tr {
+        background-color: var(--bg-card);
+        color: var(--text-primary);
+
+        &:hover {
+          background-color: var(--bg-hover) !important;
+        }
+      }
+
+      td {
+        background-color: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border-color: var(--border-color) !important;
+      }
+    }
+
+    &.table-bordered {
+      border-color: var(--border-color) !important;
+    }
+
+    &.table-hover tbody tr:hover {
+      background-color: var(--bg-hover) !important;
+
+      td {
+        background-color: var(--bg-hover) !important;
+      }
+    }
+  }
+
+  // Bootstrap buttons in light mode appearing dark - fix
+  .btn-outline-dark {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--bg-hover);
+      border-color: var(--border-color);
+      color: var(--text-primary);
+    }
+  }
+
+  .btn-dark {
+    background-color: var(--bg-tertiary);
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+  }
+
+  .btn-light {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--bg-hover);
+    }
+  }
+
+  .btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--bg-hover);
+      border-color: var(--border-color);
+      color: var(--text-primary);
+    }
+  }
+
+  .legend-item {
+    color: var(--text-primary);
+  }
+
+  // Chart.js legend text color override
+  .chart-container {
+    canvas {
+      color: var(--text-primary);
+    }
+  }
+
+  // Trend and Distribution card text colors
+  .trend-analysis-card,
+  .distribution-card {
+    .chart-container {
+      color: var(--text-primary);
+    }
+
+    .text-center span {
+      color: var(--text-primary) !important;
+    }
+  }
+
+  // Heatmap scroll container override
+  .heatmap-scroll-container {
+    background-color: var(--bg-secondary) !important;
+  }
+
+  .heatmap-content {
+    background-color: var(--bg-secondary) !important;
+  }
+
+  .heatmap-row span {
+    color: var(--text-primary) !important;
+  }
+
+  .heatmap-cells > div {
+    border-color: var(--border-color) !important;
+  }
+
+  .heatmap-hours span {
+    color: var(--text-muted) !important;
+  }
+
+  // Settings page
+  .camera-settings {
+    background-color: var(--bg-secondary);
+
+    .camera-item {
+      background-color: var(--bg-tertiary);
+
+      .camera-label {
+        color: var(--text-primary);
+      }
+
+      input {
+        background-color: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+      }
+
+      .save-btn,
+      .change-btn {
+        background-color: #007bff;
+        color: var(--text-white);
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+  }
+
+  // Toast
+  .toast-container {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+  }
+}

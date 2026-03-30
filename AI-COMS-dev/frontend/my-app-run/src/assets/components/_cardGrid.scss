@@ -1,0 +1,113 @@
+@use '../_variables.scss';
+
+// Card grid wrapper
+.card-grid-wrapper {
+  background-color: var(--bg-content);
+  min-height: 100%;
+  
+  .center-vertical {
+    align-items: center;
+    min-height: calc(100vh - 200px);
+  }
+}
+
+.single-camera .card-camera {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+// Camera card styles with CSS variables
+.card-camera {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 20px !important;
+  overflow: hidden;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  animation: fade-slide 0.3s ease-in-out;
+  border: 0 !important;
+  margin: 0 auto;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+
+  .card-header {
+    padding: 4px 26px;
+    background-color: var(--bg-secondary) !important;
+    font-size: 20px;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+
+    .time {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+  }
+
+  .status-bar {
+    padding: 2px;
+    font-size: 15px;
+    color: var(--text-white);
+
+    &.safe { background-color: var(--status-safe); }
+    &.danger { background-color: var(--status-danger); }
+    &.warning { background-color: var(--status-warning); }
+  }
+
+  #video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover !important;
+    display: block;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    &.orange { background-color: var(--status-warning); }
+    &.red { background-color: var(--status-danger); }
+  }
+
+  .record img {
+    width: 50px;
+    height: auto;
+    animation: smooth-blink 1.2s ease-in-out infinite;
+  }
+}
+
+// Animations
+@keyframes smooth-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes fade-slide {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive
+@media (max-width: 1400px) {
+  .card-camera {
+    .card-header {
+      padding: 4px 16px;
+      font-size: 16px !important;
+    }
+
+    .record img {
+      width: 40px !important;
+    }
+  }
+
+  .card {
+    height: 100% !important;
+    width: 100% !important;
+  }
+}

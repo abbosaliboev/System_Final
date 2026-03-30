@@ -1,0 +1,223 @@
+@use '../_variables.scss';
+
+// Info page styles with CSS variables
+.info-page {
+  animation: fade-slide 0.3s ease-in-out;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  color: var(--text-primary);
+
+  .info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+
+    h5 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+    }
+
+    .search-input {
+      max-width: 240px;
+      border-radius: 24px;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .system-card,
+  .contact-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    background-color: var(--bg-card);
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+
+    .card-body {
+      padding: 20px;
+      box-sizing: border-box;
+
+      .card-title {
+        font-size: 1.9rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .text-muted {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+      }
+
+      .card-text {
+        font-size: 1rem;
+        color: var(--text-primary);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+
+        .stat-item {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+          }
+
+          .stat-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+          }
+        }
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+
+        .contact-item {
+          display: flex;
+          align-items: center;
+          font-size: 1rem;
+
+          .contact-type {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-right: 0.5rem;
+          }
+
+          .contact-value {
+            color: var(--text-muted);
+          }
+
+          i {
+            color: var(--status-safe);
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+
+  .faq-section {
+    width: 100%;
+    max-width: 100%;
+
+    .faq-wrapper {
+      max-height: 300px;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar { display: none; }
+
+      .faq-item {
+        background-color: var(--bg-secondary);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        width: 100%;
+        max-width: 100%;
+
+        .faq-question {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin-bottom: 0.5rem;
+        }
+
+        .faq-answer {
+          font-size: 0.95rem;
+          color: var(--text-muted);
+        }
+      }
+    }
+  }
+
+  // Responsive breakpoints
+  @media (max-width: 768px) {
+    padding: 15px;
+
+    .info-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+
+      .search-input { max-width: 100%; }
+    }
+
+    .system-card,
+    .contact-card {
+      .card-body {
+        padding: 15px;
+
+        .card-title { font-size: 1.5rem; }
+        .text-muted { font-size: 1rem; }
+        .card-text { font-size: 0.9rem; }
+
+        .stats-grid,
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+
+    .faq-section {
+      .faq-wrapper {
+        .faq-item {
+          .faq-question { font-size: 1rem; }
+          .faq-answer { font-size: 0.85rem; }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    padding: 10px;
+
+    .system-card,
+    .contact-card {
+      .card-body {
+        .card-title { font-size: 1.3rem; }
+        .text-muted { font-size: 0.9rem; }
+      }
+    }
+
+    .faq-section {
+      .faq-wrapper {
+        max-height: 250px;
+
+        .faq-item {
+          padding: 0.75rem;
+
+          .faq-question { font-size: 0.9rem; }
+          .faq-answer { font-size: 0.8rem; }
+        }
+      }
+    }
+  }
+}

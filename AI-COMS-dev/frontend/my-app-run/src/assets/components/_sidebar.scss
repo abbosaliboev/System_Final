@@ -1,0 +1,48 @@
+// Sidebar styles with CSS variables
+.sidebar {
+  width: 120px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-sidebar);
+  color: var(--text-white);
+
+  .nav-item {
+    font-size: 18px;
+    color: var(--text-white);
+
+    &:hover {
+      background-color: var(--bg-tertiary);
+    }
+
+    svg {
+      font-size: 28px;
+    }
+  }
+
+  img {
+    border-radius: 8px;
+  }
+
+  @media (max-width: 1400px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    height: 100vh;
+    background-color: var(--bg-sidebar);
+    width: 200px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+  }
+}

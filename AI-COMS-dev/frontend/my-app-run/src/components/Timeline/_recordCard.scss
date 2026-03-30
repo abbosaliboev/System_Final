@@ -1,0 +1,34 @@
+@use '../../assets/_variables.scss';
+
+.record-card {
+  .record-image {
+    width: 240px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+  }
+
+  .card-in {
+    cursor: pointer;
+    
+    &:hover {
+      opacity: 0.95;
+    }
+  }
+
+  .record-status {
+    top: 10px;
+    left: 10px;
+
+    .badge {
+      color: var(--text-white) !important;
+    }
+  }
+}

@@ -1,0 +1,132 @@
+// Colors
+$primary: #007bff;
+$secondary: #aeaeae;
+$safe: #28a745;
+$danger: #dc3545;
+$warning: orange;
+$hover: #d1e3fa;
+$light: #f8f9fa;
+$dark: #3c3d3e;
+$white: #ffffff;
+$black: #000000;
+
+$primary-color: #5a7ffb;
+$secondary-color: hsla(213, 100%, 91%, 0.706);
+$background-color: #cbd8e7;
+
+// Typography
+$font-primary: 'Arial', sans-serif;
+$font-size-base: 16px;
+$font-weight-bold: 700;
+$font-weight-normal: 400;
+
+// Spacing (Padding & Margin)
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+
+// Box Shadows
+$box-shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.1);
+$box-shadow-md: 0px 4px 6px rgba(0, 0, 0, 0.15);
+$box-shadow-lg: 0px 6px 12px rgba(0, 0, 0, 0.2);
+
+// Breakpoints (Responsive)
+$breakpoint-xs: 320px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Z-index Levels
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-modal: 1050;
+
+// ==========================================
+// CSS Custom Properties for Dark Mode
+// ==========================================
+:root {
+  // Background colors
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --bg-card: #ffffff;
+  --bg-sidebar: #000000;
+  --bg-navbar: #ffffff;
+  --bg-content: #cbd8e7;
+  --bg-hover: #d1e3fa;
+  --bg-alert-item: hsla(213, 100%, 91%, 0.706);
+
+  // Text colors
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --text-white: #ffffff;
+
+  // Border & shadow
+  --border-color: #dee2e6;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+
+  // Status colors
+  --status-safe: #28a745;
+  --status-danger: #dc3545;
+  --status-warning: #ffc107;
+
+  // Heatmap specific
+  --heatmap-bg: #fafafa;
+  --heatmap-border: #ccccccbc;
+  --heatmap-cell-border: #e0e0e0;
+  
+  // Heatmap levels (light mode)
+  --heatmap-level-0: #eef2f7;
+  --heatmap-level-1: #b3c6e6;
+  --heatmap-level-2: #5a99d4;
+  --heatmap-level-3: #1b4f72;
+  --heatmap-level-4: #0a2855;
+}
+
+body.dark-mode {
+  // Background colors
+  --bg-primary: #1a1d2a;
+  --bg-secondary: #2a2b36;
+  --bg-tertiary: #3a3b46;
+  --bg-card: #2d2e40;
+  --bg-sidebar: #000000;
+  --bg-navbar: #000000;
+  --bg-content: #1a1d2a;
+  --bg-hover: #375069;
+  --bg-alert-item: #393f47;
+
+  // Text colors
+  --text-primary: #f1f1f1;
+  --text-secondary: #cccccc;
+  --text-muted: #aaaaaa;
+  --text-white: #ffffff;
+
+  // Border & shadow
+  --border-color: #444444;
+  --shadow-color: rgba(255, 255, 255, 0.05);
+
+  // Status colors (remain same for visibility)
+  --status-safe: #28a745;
+  --status-danger: #dc3545;
+  --status-warning: #ffc107;
+
+  // Heatmap specific
+  --heatmap-bg: #2a2b36;
+  --heatmap-border: #555555;
+  --heatmap-cell-border: #444444;
+  
+  // Heatmap levels (dark mode - more vibrant)
+  --heatmap-level-0: #3a3b46;
+  --heatmap-level-1: #4a6b8a;
+  --heatmap-level-2: #5a99d4;
+  --heatmap-level-3: #1b6f9f;
+  --heatmap-level-4: #0a4888;
+}

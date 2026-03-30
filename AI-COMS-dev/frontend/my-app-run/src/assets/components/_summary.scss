@@ -1,0 +1,408 @@
+@use '../_variables.scss';
+
+// Summary page - main styles with CSS variables
+.summary-page {
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  color: var(--text-primary);
+
+  // Header section
+  .summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+
+      .btn {
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 16px;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        font-size: 0.95rem;
+        color: var(--text-primary);
+        min-width: 160px;
+        transition: background-color 0.2s ease;
+
+        i { margin-right: 6px; }
+        &:hover { background-color: var(--bg-hover); }
+      }
+
+      .dropdown-menu {
+        margin-top: 4px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 12px var(--shadow-color);
+        min-width: 180px;
+        padding: 0;
+        background-color: var(--bg-card);
+
+        .dropdown-item {
+          font-size: 0.95rem;
+          padding: 8px 16px;
+          cursor: pointer;
+          color: var(--text-primary);
+
+          &:hover {
+            background-color: var(--bg-hover);
+            border-radius: 8px;
+          }
+
+          &.active {
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+          }
+        }
+      }
+    }
+
+    .custom-date {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      input[type="date"] {
+        border-radius: 24px;
+        padding: 6px 12px;
+        font-size: 0.95rem;
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-card);
+        color: var(--text-primary);
+        transition: border-color 0.2s ease;
+
+        &:focus {
+          border-color: #007bff;
+          outline: none;
+        }
+      }
+
+      small {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+    }
+
+    .btn {
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      font-size: 0.95rem;
+      white-space: nowrap;
+      max-width: 200px;
+      color: var(--text-primary);
+
+      i { padding-right: 6px; }
+      &:hover { background-color: var(--bg-hover); }
+    }
+  }
+
+  // Card styles
+  .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    background-color: var(--bg-card);
+    width: 100%;
+    max-width: 100%;
+    color: var(--text-primary);
+
+    .card-body {
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .card-title {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .text-muted {
+      font-size: 1.2rem;
+      color: var(--text-muted) !important;
+    }
+
+    .score-change {
+      font-size: 1.9rem;
+      font-weight: 400;
+      color: var(--status-safe);
+    }
+
+    .safety-text {
+      font-size: 1.2rem;
+    }
+  }
+
+  // Safety score card
+  .safety-score-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 100%;
+
+      .score-change {
+        color: var(--status-safe);
+        font-weight: bold;
+      }
+    }
+
+    .gauge-chart {
+      width: 80%;
+      margin-bottom: 15%;
+      margin: 0 auto;
+
+      text { display: none; }
+    }
+
+    .progress-bar-section {
+      margin-bottom: 10%;
+      gap: 10px;
+      width: 100%;
+      max-width: 100%;
+
+      img { width: 30px; }
+
+      .progress {
+        flex-grow: 1;
+        height: 10px;
+        border-radius: 5px;
+        background-color: var(--bg-tertiary);
+        margin-top: 4px;
+
+        .progress-bar {
+          border-radius: 5px;
+          background-color: var(--status-safe);
+        }
+      }
+    }
+  }
+
+  .chart-container {
+    height: 220px;
+    max-width: 100%;
+  }
+
+  .trend-analysis-card,
+  .distribution-card,
+  .heatmap-card,
+  .violation-ranking-card {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  .legend {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    max-width: 100%;
+    color: var(--text-primary);
+  }
+
+  // Heatmap - with dark mode support
+  .heatmap {
+    flex-grow: 1;
+    overflow: auto;
+    max-height: 100%;
+
+    .heatmap-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      min-width: max-content;
+
+      span {
+        width: 20%;
+        font-size: 1rem;
+        flex-shrink: 0;
+        color: var(--text-primary);
+      }
+
+      .heatmap-cells {
+        border: 1px solid var(--heatmap-border);
+        display: flex;
+        flex-grow: 1;
+        min-width: 0;
+
+        .heatmap-cell {
+          border-radius: 5px;
+          margin: 0 2px;
+          width: 30px;
+          height: 30px;
+          flex-shrink: 0;
+          border: 1px solid var(--heatmap-cell-border);
+        }
+      }
+    }
+  }
+
+  // Detect list
+  .detect-list {
+    overflow-y: auto;
+    flex-grow: 1;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    width: 100%;
+    max-width: 100%;
+
+    &::-webkit-scrollbar { display: none; }
+
+    .detect-row {
+      background-color: var(--bg-alert-item);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      max-width: 100%;
+      color: var(--text-primary);
+
+      &:hover {
+        background-color: var(--bg-hover);
+      }
+
+      span { font-size: 1.1rem; }
+    }
+  }
+
+  // Responsive breakpoints
+  @media (max-width: 1200px) {
+    .heatmap .heatmap-row .heatmap-cells .heatmap-cell {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .heatmap .heatmap-row {
+      span {
+        width: 70px;
+        font-size: 1rem;
+      }
+
+      .heatmap-cells .heatmap-cell {
+        width: 25px;
+        height: 25px;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 15px;
+
+    // Enable horizontal scroll only on mobile
+    .heatmap-scroll-container {
+      overflow-x: auto !important;
+    }
+
+    .summary-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+
+      .date-picker {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        max-width: 100%;
+
+        input[type="date"] { max-width: 100%; }
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 200px;
+      }
+    }
+
+    .card {
+      .card-body { padding: 15px; }
+      .card-title { font-size: 1.5rem; }
+      .score-change { font-size: 1.5rem; }
+    }
+
+    .chart-container { height: 200px; }
+
+    .trend-analysis-card,
+    .distribution-card,
+    .heatmap-card,
+    .violation-ranking-card {
+      min-height: 150px;
+    }
+
+    .heatmap .heatmap-row {
+      span {
+        width: 60px;
+        font-size: 0.9rem;
+      }
+
+      .heatmap-cells .heatmap-cell {
+        width: 22px;
+        height: 22px;
+        margin: 0 1px;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    padding: 10px;
+
+    .chart-container { height: 250px; }
+
+    .heatmap .heatmap-row {
+      span {
+        width: 90px;
+        font-size: 0.85rem;
+      }
+
+      .heatmap-cells .heatmap-cell {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+
+

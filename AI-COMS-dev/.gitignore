@@ -1,0 +1,74 @@
+# media screenshots
+backend/ai_factory/media/
+
+
+# dependencies
+node_modules
+/.pnp
+.pnp.js
+frontend/my-app/node_modules/
+frontend/my-app/.cache/
+*.pack
+KCL_test/
+
+#KCL TEST
+/KCL_test
+
+#db sqlite
+*.sqlite3
+db.sqlite3
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#training logs
+logs/
+runs/
+training_logs/
+
+#python  env
+/aicoms_venv
+/myenv
+back-env/
+venv/
+/venv
+.venv/
+/.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+############
+node_modules/
+.cache/node_modules/ 
+frontend/my-app/node_modules/ 
+frontend/my-app/.cache/ 
+.env 
+backend-env
+
+## media
+*.mp4
+
+#yolo weights
+*.pt
+*.onnx
+*.engine
+backend/ai_factory/db.sqlite3

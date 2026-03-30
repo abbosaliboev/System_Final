@@ -1,0 +1,25 @@
+@use '../variables' ;
+
+.login-container {
+  background-color: variables.$background-color;
+
+  .login-left {
+    background-color: variables.$background-color;
+
+    p {
+      font-size: 1.3rem;
+      color: #666;
+    }
+  }
+
+  .login-form {
+    width: 100%;
+    max-width: 400px; // ✅ max width limit
+  }
+
+  .support {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
