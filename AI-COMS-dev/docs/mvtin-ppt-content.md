@@ -1,4 +1,4 @@
-# MVTIN PPT — Slide Content & Image Search Guide
+# MVTIN PPT — Slide Content
 
 ---
 
@@ -11,10 +11,6 @@
 - Single camera → blind spots, occlusion
 - Real falls are diverse and unpredictable
 
-**Google image search:**
-> `hospital elderly fall surveillance camera blind spot`
-> `factory worker fall detection cctv`
-
 ---
 
 ## Slide 2 — Key Insight: Falls Break Physics
@@ -25,10 +21,6 @@
 - Walking forward → reverse → still looks normal
 - Falling → reverse → physically impossible
 - This is a law of nature, not a learned pattern
-
-**Google image search:**
-> `human motion time reversal symmetry illustration`
-> `thermodynamic irreversibility arrow of time diagram`
 
 ---
 
@@ -42,10 +34,6 @@
 - **I-Score = backward error − forward error**
 - No fall labels needed during pretraining
 
-**Google image search:**
-> `forward backward prediction neural network diagram`
-> `time series anomaly detection reconstruction error graph`
-
 ---
 
 ## Slide 4 — Why It Works
@@ -57,10 +45,6 @@
 - Fall motion → I-Score >> 0
 - Threshold θ separates the two distributions
 - Zero labeled falls required
-
-**Google image search:**
-> `anomaly score distribution normal vs anomaly histogram`
-> `gaussian distribution overlap threshold classification`
 
 ---
 
@@ -74,10 +58,6 @@
 - Naive average of scores = wrong (polluted by occluded camera)
 - Which camera to trust?
 
-**Google image search:**
-> `multi camera surveillance system factory floor top view`
-> `cctv camera occlusion blind spot industrial`
-
 ---
 
 ## Slide 6 — Solution: Cross-View Attention
@@ -89,10 +69,6 @@
 - Visibility = average keypoint confidence from pose detector
 - Cross-view attention: clear view → higher weight
 - Occluded camera → automatically down-weighted
-
-**Google image search:**
-> `attention mechanism weights visualization heatmap`
-> `multi-view fusion neural network diagram`
 
 ---
 
@@ -109,10 +85,6 @@ cam3 → [Encoder] → [Fwd/Bwd] → I-score³ ─┘
 Shared encoder weights → view-agnostic representation
 ```
 
-**Google image search:**
-> `multi-stream neural network architecture diagram`
-> `skeleton pose sequence transformer encoder diagram`
-
 ---
 
 ## Slide 8 — What Makes This New
@@ -128,11 +100,6 @@ Shared encoder weights → view-agnostic representation
 | Physics-based | ✗ | ✗ | ✓ |
 | Open-set falls | ✗ | ✗ | ✓ |
 
-**Google image search:**
-> `comparison table research novelty slide presentation`
-
-*(No image needed — table is the visual)*
-
 ---
 
 ## Slide 9 — Validation Plan
@@ -144,10 +111,6 @@ Shared encoder weights → view-agnostic representation
 - **Zero-shot:** UPFall, UR-Fall, Le2i — no labeled falls
 - **Few-shot:** 5 / 10 / 50 examples vs TCNTE (1000+)
 - **Occlusion test:** Block 1–2 cameras → measure accuracy drop
-
-**Google image search:**
-> `few-shot learning accuracy curve plot`
-> `UPFall dataset skeleton pose benchmark`
 
 ---
 
@@ -161,15 +124,131 @@ Shared encoder weights → view-agnostic representation
 > *to reverse the observed motion —*
 > *no fall labels needed, no single camera dependency."*
 
-**Google image search:**
-> `human skeleton falling motion sequence pose estimation`
-> `skeleton keypoint fall detection visualization`
+---
+---
+
+# MVTIN PPT — Slayd Mazmuni (O'zbek tilida)
 
 ---
 
-## Notes
+## Slayd 1 — Muammo
 
-- Slides 1, 5: use real CCTV/factory images → makes it feel practical
-- Slides 3, 4: use diagram/graph images → shows technical depth
-- Slides 7: draw the architecture yourself (no good Google result)
-- Slide 10: full-screen bold text + one background image is enough
+**Sarlavha:** Hozirgi Yiqilishni Aniqlash Usullari Ishlamaydi
+
+**Mazmun:**
+- Modelni o'qitish uchun 1000+ belgilangan yiqilish kerak → qimmat, to'liq emas
+- Bitta kamera → ko'r nuqtalar, to'siq
+- Haqiqiy yiqilishlar xilma-xil va oldindan aytib bo'lmaydi
+
+---
+
+## Slayd 2 — Asosiy G'oya: Yiqilish Fizikani Buzadi
+
+**Sarlavha:** Oddiy Harakat Qaytariladigan. Yiqilish Emas.
+
+**Mazmun:**
+- Oldinga yurish → teskari → baribir normal ko'rinadi
+- Yiqilish → teskari → jismonan mumkin emas
+- Bu tabiat qonuni, o'rganilgan naqsh emas
+
+---
+
+## Slayd 3 — G'oya 1: Vaqtinchalik Qaytarilmaslik Bahosi
+
+**Sarlavha:** Normalda O'qit. G'ayritabiiyni Aniqa.
+
+**Mazmun:**
+- Oldinga prediktor: keyingi nima? → har doim kichik xato
+- Orqaga prediktor: oldingi nima edi? → yiqilishda KATTA xato
+- **I-Score = orqaga xatosi − oldinga xatosi**
+- O'qitishda belgilangan yiqilish kerak emas
+
+---
+
+## Slayd 4 — Nima Uchun Ishlaydi
+
+**Sarlavha:** Ball Yiqilishni Normaldan Avtomatik Ajratadi
+
+**Mazmun:**
+- Oddiy harakat → I-Score ≈ 0
+- Yiqilish harakati → I-Score >> 0
+- θ chegarasi ikki taqsimotni ajratadi
+- Belgilangan yiqilish misollari talab qilinmaydi
+
+---
+
+## Slayd 5 — G'oya 2: Ko'p Kamera Muammosi
+
+**Sarlavha:** Bitta Kamera Hech Qachon Yetarli Emas
+
+**Mazmun:**
+- 4 ta kamera, bir xil odam, turli burchaklar
+- Istalgan kamera javon, mashina yoki odam tomonidan to'sib qo'yilishi mumkin
+- Balllarning oddiy o'rtachasi = noto'g'ri (to'silgan kamera tomonidan buzilgan)
+- Qaysi kameraga ishonish kerak?
+
+---
+
+## Slayd 6 — Yechim: Ko'p Ko'rinish Diqqati
+
+**Sarlavha:** Tarmoq Qaysi Kameraga Ishonishni O'zi Hal Qilsin
+
+**Mazmun:**
+- Har bir kamera → o'z I-Score + ko'rinish ishonchi
+- Ko'rinish = poza detektoridan o'rtacha kalit nuqta ishonchi
+- Ko'p ko'rinish diqqati: aniq ko'rinish → yuqori og'irlik
+- To'silgan kamera → avtomatik ravishda past og'irlik
+
+---
+
+## Slayd 7 — To'liq Arxitektura: MVTIN
+
+**Sarlavha:** Ko'p Ko'rinishli Vaqtinchalik Qaytarilmaslik Tarmog'i
+
+**Mazmun:**
+```
+kamera1 → [Encoder] → [Old/Orqa] → I-score¹ ─┐
+kamera2 → [Encoder] → [Old/Orqa] → I-score² ─┤→ [Ko'p Ko'rinish Diqqati] → YIQILDI / XAVFSIZ
+kamera3 → [Encoder] → [Old/Orqa] → I-score³ ─┘
+
+Umumiy encoder og'irliklari → ko'rinishdan mustaqil vakillik
+```
+
+---
+
+## Slayd 8 — Bu Nima Uchun Yangi
+
+**Sarlavha:** Hech Kim Bu Ishni Qilmagan
+
+**Mazmun:**
+
+| | TCNTE | ST-GCN | **MVTIN** |
+|---|:---:|:---:|:---:|
+| Kerakli yiqilish belgilari | 1000+ | 800+ | **0** |
+| Ko'p kamera | ✗ | ✗ | ✓ |
+| Fizikaga asoslangan | ✗ | ✗ | ✓ |
+| Yangi yiqilish turlari | ✗ | ✗ | ✓ |
+
+---
+
+## Slayd 9 — Tasdiqlash Rejasi
+
+**Sarlavha:** Ishlashini Qanday Isbotlaymiz
+
+**Mazmun:**
+- **1-kun testi:** UPFall da yiqilish va normal uchun I-Score ni chiz → ajratiladimi?
+- **Nol-shot:** UPFall, UR-Fall, Le2i — belgilangan yiqilishsiz
+- **Kam-shot:** 5 / 10 / 50 misol vs TCNTE (1000+)
+- **To'siq testi:** 1–2 kamerani to'sib qo'y → aniqlik pasayishini o'lcha
+
+---
+
+## Slayd 10 — Bir Jumlada Xulosa
+
+**Sarlavha:** MVTIN Bir Jumlada
+
+**Mazmun:**
+
+> *"MVTIN yiqilishni kuzatilgan harakatni teskari qilishning*
+> *qanchalik mumkin emasligini o'lchash orqali aniqlaydi —*
+> *belgilangan misollar kerak emas, bitta kameraga bog'liqlik yo'q."*
