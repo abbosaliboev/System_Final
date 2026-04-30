@@ -20,26 +20,41 @@
 
 ## Model Tezligi Benchmark Natijalari
 
-*(dummy 640×640 frame, 200 iter, TITAN RTX)*
+Ikki xil source bilan o'lchandi:
 
-| Config | PPE ms | Pose ms | Total ms | Model FPS | vs A |
-|--------|--------|---------|----------|-----------|------|
-| **A**: best_detect.engine + 17kp engine | 6.4 ms | 5.0 ms | **11.4 ms** | **87.9** | — |
-| **B**: best_detect.engine + 10kp pt | 6.7 ms | 9.2 ms | **15.8 ms** | **63.2** | -24.6 FPS |
-| **C**: unify.engine + 10kp pt | 4.9 ms | 9.5 ms | **14.5 ms** | **69.1** | -18.8 FPS |
-| **D**: unify.engine + 10kp pt + FD | 4.8 ms | 8.0 ms | **12.8 ms** | **78.4** | -9.5 FPS* |
-| **E**: unify.engine + 10kp engine (TRT) | 5.0 ms | 4.8 ms | **9.8 ms** | **102.4** | **+14.5 FPS** ✓ |
+### A) Dummy frame (640×640 qora frame, 200 iter)
 
-> \* **Config D** — dummy qora frame da 99.5% skip (harakat yo'q), faqat 1 frame o'lchandi — statistik jihatdan bekor. Real RTSP da skip % ancha past bo'ladi.
+| Config | PPE ms | Pose ms | Total ms | FPS | vs A |
+|--------|--------|---------|----------|-----|------|
+| **A** | 6.4 ms | 5.0 ms | **11.4 ms** | **87.9** | — |
+| **B** | 6.7 ms | 9.2 ms | **15.8 ms** | **63.2** | -24.6 |
+| **C** | 4.9 ms | 9.5 ms | **14.5 ms** | **69.1** | -18.8 |
+| **D** +FD | — | — | — | invalid* | — |
+| **E** | 5.0 ms | 4.8 ms | **9.8 ms** | **102.4** | **+14.5** ✓ |
+
+> \* Config D dummy da: 199/200 frame skip (99.5%) → faqat 1 frame o'lchandi → bekor.
+
+### B) Real video (test2.mp4, 200 iter) — Config D uchun valid
+
+| Config | PPE ms | Pose ms | Total ms | FPS | vs A | Skip |
+|--------|--------|---------|----------|-----|------|------|
+| **A** | 7.0 ms | 5.1 ms | **12.1 ms** | **82.8** | — | — |
+| **B** | 7.0 ms | 7.7 ms | **14.7 ms** | **68.0** | -14.8 | — |
+| **C** | 6.1 ms | 9.1 ms | **15.2 ms** | **65.8** | -17.0 | — |
+| **D** +FD | 6.2 ms | 8.2 ms | **14.5 ms** | **69.2** | -13.6 | 120/200 (60%) |
+| **E** | 5.4 ms | 5.1 ms | **10.5 ms** | **95.0** | **+12.2** ✓ | — |
+
+> Config D real video da 60% frame skip → C dan tezroq (69.2 > 65.8 FPS).
+> Lekin real RTSP da skip atigi 10–20% → stream FPS da -27.8% (pastga qarang).
 
 ### Asosiy Xulosa — Model Format > Keypoint Soni
 
 | | best_pose.engine (17kp, TRT) | yolo11n-10kp.pt (10kp, PT) | yolo11n-10kp.engine (10kp, TRT) |
 |--|--|--|--|
-| Pose ms | 5.0 ms | 9.2–9.5 ms | **4.8 ms** |
-| Sabab | TensorRT FP16 | PyTorch (PT format) | TensorRT FP16 |
+| Pose ms (real video) | 5.1 ms | 7.7–9.1 ms | **5.1 ms** |
+| Format | TensorRT FP16 | PyTorch (PT) | TensorRT FP16 |
 
-**Config E (unify + 10kp TRT) — eng tezkor**: 9.8 ms/frame → 102.4 FPS. Ikkala model ham TensorRT formatida → maksimal GPU samaradorligi.
+**Config E (unify + 10kp TRT) — eng tezkor**: 95.0 FPS (real video), 102.4 FPS (dummy). Ikkala model ham TensorRT → maksimal GPU samaradorligi.
 
 ---
 

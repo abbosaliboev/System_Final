@@ -66,30 +66,41 @@
 
 **Title:** Model Speed: Pure GPU Inference (No RTSP Overhead)
 
-**Method:** Dummy 640×640 black frame, 200 iterations, TITAN RTX
 **Script:** `benchmark_pose_configs.py` — custom written for this experiment
+**Two sources used:** dummy black frame + real video (test2.mp4)
 
-**Results:**
+**Dummy frame (640×640 black) — Config D invalid:**
 
 | Config | PPE ms | Pose ms | Total ms | FPS | vs A |
 |--------|-------:|--------:|---------:|----:|-----:|
-| A: best_detect + 17kp engine | 6.4 | 5.0 | **11.4** | **87.9** | — |
-| B: best_detect + 10kp pt | 6.7 | 9.2 | **15.8** | **63.2** | −24.6 |
-| C: unify + 10kp pt | 4.9 | 9.5 | **14.5** | **69.1** | −18.8 |
-| D: unify + 10kp pt + FD | — | — | — | — | invalid* |
+| A: best_detect + 17kp TRT | 6.4 | 5.0 | 11.4 | **87.9** | — |
+| B: best_detect + 10kp PT | 6.7 | 9.2 | 15.8 | 63.2 | −24.6 |
+| C: unify + 10kp PT | 4.9 | 9.5 | 14.5 | 69.1 | −18.8 |
+| D: unify + 10kp PT + FD | — | — | — | **invalid*** | — |
 
-> \* Config D: dummy black frame → 99.5% frames skipped (no motion) → only 1 frame measured → statistically invalid for dummy source.
+> \* Dummy black frame = no motion → 199/200 frames skipped → 1 frame only → invalid.
 
-**Key observation from this table:**
+**Real video (test2.mp4) — Config D now valid:**
+
+| Config | PPE ms | Pose ms | Total ms | FPS | vs A | FD Skip |
+|--------|-------:|--------:|---------:|----:|-----:|--------:|
+| A | 7.0 | 5.1 | 12.1 | **82.8** | — | — |
+| B | 7.0 | 7.7 | 14.7 | 68.0 | −14.8 | — |
+| C | 6.1 | 9.1 | 15.2 | 65.8 | −17.0 | — |
+| D +FD | 6.2 | 8.2 | 14.5 | **69.2** | −13.6 | **120/200 (60%)** |
+
+> Config D skips 60% of frames from real video → faster than C (69.2 > 65.8 FPS).
+> But in live RTSP stream: much less motion-free frames → performance drops (see Slide 5).
+
+**Key finding:**
 
 | | 17kp (best_pose.engine) | 10kp (yolo11n-10kp.pt) |
 |--|:-----------------------:|:----------------------:|
 | Format | TensorRT FP16 | PyTorch (.pt) |
-| Pose ms | **5.0 ms** | 9.2–9.5 ms |
-| Ratio | — | ~2× slower |
+| Pose ms | **5.1 ms** | 7.7–9.1 ms |
 
-> **Finding:** Model format (TRT vs PT) determines speed more than keypoint count.
-> 17kp TRT is faster than 10kp PT — despite having more keypoints.
+> **TensorRT format matters more than keypoint count.**
+> 17kp TRT beats 10kp PT despite having more keypoints.
 
 ---
 
@@ -155,29 +166,39 @@ python export_10kp_engine.py
 
 **Title:** Config E — Best of Both Worlds
 
-**Model speed benchmark (all 5 configs):**
+**Model speed benchmark — real video (test2.mp4), all 5 configs:**
 
-| Config | PPE ms | Pose ms | Total ms | FPS | vs A |
-|--------|-------:|--------:|---------:|----:|-----:|
-| A: best_detect + 17kp TRT | 6.4 | 5.0 | 11.4 | 87.9 | — |
-| B: best_detect + 10kp PT | 6.7 | 9.2 | 15.8 | 63.2 | −24.6 |
-| C: unify + 10kp PT | 4.9 | 9.5 | 14.5 | 69.1 | −18.8 |
-| D: unify + 10kp PT + FD | — | — | — | — | invalid |
-| **E: unify + 10kp TRT** | **5.0** | **4.8** | **9.8** | **102.4** | **+14.5** |
+| Config | PPE ms | Pose ms | Total ms | FPS | vs A | FD Skip |
+|--------|-------:|--------:|---------:|----:|-----:|--------:|
+| A: best_detect + 17kp TRT | 7.0 | 5.1 | 12.1 | 82.8 | — | — |
+| B: best_detect + 10kp PT | 7.0 | 7.7 | 14.7 | 68.0 | −14.8 | — |
+| C: unify + 10kp PT | 6.1 | 9.1 | 15.2 | 65.8 | −17.0 | — |
+| D: unify + 10kp PT + FD | 6.2 | 8.2 | 14.5 | 69.2 | −13.6 | 60% |
+| **E: unify + 10kp TRT** | **5.4** | **5.1** | **10.5** | **95.0** | **+12.2** | — |
 
-**Stream FPS (4 RTSP cameras):**
+**Stream FPS (4 real RTSP cameras, 60s stable window):**
 
-| Config | Total FPS | vs A |
-|--------|----------:|-----:|
-| A | 33.03 | — |
-| B | 32.79 | −0.7% |
-| C | 33.09 | +0.2% |
-| D | 23.84 | −27.8% |
-| **E** | **34.33** | **+3.9%** |
+| Config | cam1 | cam2 | cam3 | cam4 | Total FPS | vs A |
+|--------|-----:|-----:|-----:|-----:|----------:|-----:|
+| A | 8.60 | 8.31 | 8.23 | 7.88 | 33.03 | — |
+| B | 8.56 | 8.21 | 8.22 | 7.80 | 32.79 | −0.7% |
+| C | 8.81 | 8.40 | 8.09 | 7.79 | 33.09 | +0.2% |
+| D | 6.30 | 6.30 | 5.65 | 5.60 | 23.84 | −27.8% |
+| **E** | **8.76** | **8.71** | **8.44** | **8.42** | **34.33** | **+3.9%** |
 
-**Why stream FPS gain is small (+3.9%) despite model gain (+16.5%)?**
-> Same bottleneck: RTSP network limits to ~8–9 FPS per camera regardless of GPU speed.
-> Model benchmark shows real GPU capability; stream FPS shows real deployment constraint.
+**Config D paradox — video vs stream:**
+
+| Source | FD Skip % | FPS result |
+|--------|----------:|----------:|
+| Real video (test2.mp4) | **60%** | 69.2 FPS (faster than C) |
+| Real RTSP (live cameras) | **~10%** | 23.84 FPS (−27.8%) |
+
+> test2.mp4 has many static scenes → 60% skip → helps.
+> Live RTSP cameras: people always moving → few skips → only CPU overhead → hurts.
+
+**Why stream FPS gain small (+3.9%) despite model gain (+14.7%)?**
+> RTSP network limits each camera to ~8–9 FPS. GPU waits for frames, not vice versa.
+> Model benchmark = pure GPU capability. Stream FPS = real deployment constraint.
 
 ---
 
