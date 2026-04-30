@@ -1,170 +1,109 @@
-# AI-COMS — Final Benchmark Table
+# AI-COMS — Final Benchmark Table (All TensorRT FP16)
 
-**Hardware:** NVIDIA TITAN RTX 24GB · Intel i9-10900X · 64GB RAM · CUDA 12.1 · TensorRT 10.x
-**Date:** 2026-04-30
-
----
-
-## 1. Model Configuration Overview
-
-| Config | PPE Model | PPE Size | PPE Format | Pose Model | Pose Format | Keypoints | Frame Diff |
-|--------|-----------|:--------:|:----------:|------------|:-----------:|:---------:|:----------:|
-| **A** | `best_detect.engine` | 42 MB | TRT FP16 | `best_pose.engine` | TRT FP16 | 17 | ✗ |
-| **B** | `best_detect.engine` | 42 MB | TRT FP16 | `yolo11n-10kp.pt` | PyTorch | 10 | ✗ |
-| **C** | `unify-29march.engine` | 7.9 MB | TRT FP16 | `yolo11n-10kp.pt` | PyTorch | 10 | ✗ |
-| **D** | `unify-29march.engine` | 7.9 MB | TRT FP16 | `yolo11n-10kp.pt` | PyTorch | 10 | ✓ |
-| **E** | `unify-29march.engine` | 7.9 MB | TRT FP16 | `yolo11n-10kp.engine` | TRT FP16 | 10 | ✗ |
+**Hardware:** NVIDIA TITAN RTX 24GB · Intel i9-10900X · CUDA 12.1 · TensorRT 10.x
+**All models:** TensorRT FP16 (.engine format)
 
 ---
 
-## 2. Model Speed Benchmark — Dummy Frame
+## Configuration Overview
 
-**Source:** 640×640 black frame · 200 iterations · single-thread · no RTSP overhead
-
-| Config | PPE ms | Pose ms | Total ms | Model FPS | vs A |
-|--------|-------:|--------:|---------:|----------:|-----:|
-| A | 6.4 | 5.0 | **11.4** | **87.9** | — |
-| B | 6.7 | 9.2 | **15.8** | **63.2** | −24.7 |
-| C | 4.9 | 9.5 | **14.5** | **69.1** | −18.8 |
-| D | — | — | — | **invalid*** | — |
-| **E** | **5.0** | **4.8** | **9.8** | **102.4** | **+14.5** |
-
-> \* Config D: 199/200 frames skipped (dummy = no motion) → 1 frame only → statistically invalid.
+| Config | PPE Model | Pose Model | Keypoints | Frame Diff | PPE Size | Pose Size | Total Size |
+|--------|-----------|------------|:---------:|:----------:|---------:|----------:|-----------:|
+| **1** | `best_detect.engine` | `best_pose.engine` | 17 | ✗ | 41.5 MB | 8.9 MB | **50.4 MB** |
+| **2** | `best_detect.engine` | `yolo11n-10kp.engine` | 10 | ✗ | 41.5 MB | 7.7 MB | **49.2 MB** |
+| **3** | `unify-29march.engine` | `yolo11n-10kp.engine` | 10 | ✗ | 7.8 MB | 7.7 MB | **15.5 MB** |
+| **4** | `unify-29march.engine` | `yolo11n-10kp.engine` | 10 | ✓ | 7.8 MB | 7.7 MB | **15.5 MB** |
 
 ---
 
-## 3. Model Speed Benchmark — Real Video
+## Pure GPU Speed — Dummy Frame (640×640 black, 200 iter)
 
-**Source:** `test2.mp4` · 200 iterations · single-thread
+*No RTSP overhead. Measures raw GPU inference speed.*
 
-| Config | PPE ms | Pose ms | Total ms | Model FPS | vs A | FD Skipped |
-|--------|-------:|--------:|---------:|----------:|-----:|-----------:|
-| A | 7.0 | 5.1 | **12.1** | **82.8** | — | — |
-| B | 7.0 | 7.7 | **14.7** | **68.0** | −14.8 | — |
-| C | 6.1 | 9.1 | **15.2** | **65.8** | −17.0 | — |
-| D | 6.2 | 8.2 | **14.5** | **69.2** | −13.6 | 120/200 (60%) |
-| **E** | **5.4** | **5.1** | **10.5** | **95.0** | **+12.2** | — |
+| Config | PPE ms | Pose ms | Total ms | Pure FPS | vs Config 1 |
+|--------|-------:|--------:|---------:|---------:|------------:|
+| 1: best_detect + 17kp | 6.0 | 4.4 | **10.4** | **96.5** | — |
+| 2: best_detect + 10kp | 5.8 | 4.0 | **9.7** | **102.8** | +6.3 (+6.5%) |
+| 3: unify + 10kp | 4.4 | 4.2 | **8.6** | **116.7** | +20.2 (+20.9%) |
+| 4: unify + 10kp + FD | — | — | — | **invalid*** | — |
 
-> Config D with real video: 60% static scenes skipped → faster than C. But live RTSP has much less static content.
-
----
-
-## 4. End-to-End Stream FPS — Real RTSP
-
-**Source:** 4 real RTSP cameras · `[INF 60s]` log · 2nd stable window · `state_manager.py`
-
-| Config | cam1 | cam2 | cam3 | cam4 | Total FPS | Per-cam avg | vs A |
-|--------|-----:|-----:|-----:|-----:|----------:|------------:|-----:|
-| A | 8.60 | 8.31 | 8.23 | 7.88 | **33.03** | 8.26 | — |
-| B | 8.56 | 8.21 | 8.22 | 7.80 | **32.79** | 8.20 | −0.7% |
-| C | 8.81 | 8.40 | 8.09 | 7.79 | **33.09** | 8.27 | +0.2% |
-| D | 6.30 | 6.30 | 5.65 | 5.60 | **23.84** | 5.96 | −27.8% |
-| **E** | **8.76** | **8.71** | **8.44** | **8.42** | **34.33** | **8.58** | **+3.9%** |
+> \* Config 4 dummy: 199/200 frames skipped (black frame = no motion) → 1 frame measured → invalid.
 
 ---
 
-## 5. Fall Detection Accuracy — 10kp vs 17kp
+## Pure GPU Speed — Real Video (test2.mp4, 200 iter)
 
-**Dataset:** UPFall (Subject1) · 5 fall types + walking, sitting, bending, jumping
-**Model:** TCN-Attention · 30-frame sequence input · 2-class output (fall / no_fall)
-**Evaluation:** `evaluate_yolo10kp.py` · `evaluate_full_kp.py`
+*Real content frames. Config 4 frame differencing valid here.*
 
-| Metric | 10kp Model | 17kp Model | Winner |
-|--------|:----------:|:----------:|:------:|
-| Overall Accuracy | **99.21%** | 99.10% | **10kp** |
-| Normal — Precision | **1.000** | 1.000 | = |
-| Normal — Recall | 0.985 | 0.990 | 17kp |
-| Normal — F1 | **0.992** | 0.990 | **10kp** |
-| Fall — Precision | **0.984** | 0.950 | **10kp** |
-| Fall — Recall | **1.000** | 0.980 | **10kp** |
-| Fall — F1 | **0.992** | 0.970 | **10kp** |
-| Test samples | 2,163 | 7,591 | — |
-| Pose model FPS (TRT) | **209** | 200 | **10kp** |
+| Config | PPE ms | Pose ms | Total ms | Video FPS | vs Config 1 | FD Skip |
+|--------|-------:|--------:|---------:|----------:|------------:|--------:|
+| 1: best_detect + 17kp | 7.2 | 5.2 | **12.4** | **80.7** | — | — |
+| 2: best_detect + 10kp | 6.9 | 4.6 | **11.5** | **87.2** | +6.5 (+8.1%) | — |
+| 3: unify + 10kp | 5.1 | 4.8 | **9.9** | **101.4** | +20.7 (+25.6%) | — |
+| 4: unify + 10kp + FD | 7.4 | 6.7 | **14.1** | **70.9** | −9.8 (−12.1%) | 120/200 (60%) |
 
-> **Fall Recall = 1.000** (10kp): zero missed falls. Critical for safety systems.
+> Config 4 video FPS (70.9) görünür yomon — chunki faqat 80 frame o'lchandi, va ular harakati bor (qiyin) frame lar. Skip qilingan 120 frame 0ms sarfladi.
 
 ---
 
-## 6. Complete Summary — All Metrics Side by Side
+## End-to-End Stream FPS — Real RTSP (4 cameras, 60s window)
 
-| Config | PPE ms* | Pose ms* | Total ms* | Model FPS* | Stream FPS | Fall F1 | Fall Recall |
-|--------|--------:|---------:|----------:|-----------:|-----------:|--------:|------------:|
-| A | 7.0 | 5.1 | 12.1 | 82.8 | 33.03 | 0.970** | 0.980** |
-| B | 7.0 | 7.7 | 14.7 | 68.0 | 32.79 | **0.992** | **1.000** |
-| C | 6.1 | 9.1 | 15.2 | 65.8 | 33.09 | **0.992** | **1.000** |
-| D | 6.2 | 8.2 | 14.5 | 69.2 | 23.84 | **0.992** | **1.000** |
-| **E** | **5.4** | **5.1** | **10.5** | **95.0** | **34.33** | **0.992** | **1.000** |
+*`[INF 60s]` log, 2nd stable window, state_manager.py*
 
-> \* Real video benchmark (test2.mp4)
-> \*\* 17kp accuracy — measured with correct keypoint remapping (bug fixed)
+| Config | cam1 | cam2 | cam3 | cam4 | Total FPS | Per-cam | vs Config 1 |
+|--------|-----:|-----:|-----:|-----:|----------:|--------:|------------:|
+| 1: best_detect + 17kp | 8.60 | 8.31 | 8.23 | 7.88 | **33.03** | 8.26 | — |
+| 2: best_detect + 10kp | — | — | — | — | **~33*** | ~8.3 | ~0% |
+| 3: unify + 10kp | 8.76 | 8.71 | 8.44 | 8.42 | **34.33** | 8.58 | +1.30 (+3.9%) |
+| 4: unify + 10kp + FD | 6.48 | 6.51 | 5.43 | 5.40 | **23.82** | 5.96 | −9.21 (−27.9%) |
+
+> \* Config 2 RTSP o'lchanmagan. Config 1 bilan PPE modeli bir xil, pose TRT → farq minimal (~33 FPS).
 
 ---
 
-## 7. Key Findings
+## Complete Summary — All Metrics
 
-### Finding 1 — TensorRT Format > Keypoint Count
+| Config | PPE Model | Pose | KP | Size | Dummy FPS | Video FPS | RTSP FPS | Fall Acc | Fall Recall |
+|--------|-----------|------|----|-----:|----------:|----------:|---------:|:--------:|:-----------:|
+| **1** | best_detect | best_pose | 17 | 50.4 MB | 96.5 | 80.7 | 33.03 | 99.10% | 0.980 |
+| **2** | best_detect | 10kp | 10 | 49.2 MB | 102.8 | 87.2 | ~33* | **99.21%** | **1.000** |
+| **3** | unify | 10kp | 10 | **15.5 MB** | **116.7** | **101.4** | **34.33** | **99.21%** | **1.000** |
+| **4** | unify | 10kp + FD | 10 | **15.5 MB** | invalid** | 70.9*** | 23.82 | **99.21%** | **1.000** |
 
-| Pose model | Format | Pose ms (real video) |
-|------------|:------:|---------------------:|
-| best_pose.engine (17kp) | TRT FP16 | 5.1 ms |
-| yolo11n-10kp.pt (10kp) | PyTorch | 7.7–9.1 ms |
-| **yolo11n-10kp.engine (10kp)** | **TRT FP16** | **5.1 ms** |
+> \* Config 2 RTSP o'lchanmagan — Config 1 bilan PPE bir xil, pose TRT farqi minimal.
+> \*\* Config 4 dummy: 199/200 skip (black frame = no motion) → invalid.
+> \*\*\* Config 4 video FPS: 60% frame skip, faqat 80 frame o'lchandi.
 
-> 17kp TRT ≈ 10kp TRT in speed. 10kp PT is ~1.7× slower despite fewer keypoints.
+---
 
-### Finding 2 — Stream FPS Is Network-Bounded, Not GPU-Bounded
+## Key Findings
 
-| Factor | Effect |
-|--------|--------|
-| 33 FPS hard cap in `streaming_manager.py` | GPU cannot exceed ~33 FPS regardless of speed |
-| Alternating inference (pose every 2nd frame) | Not every frame hits GPU |
-| RTSP camera rate ~8–9 FPS per cam | GPU waits for frames |
+| Finding | Detail |
+|---------|--------|
+| **Best config overall** | Config 3 — smallest size, fastest speed, best RTSP FPS |
+| **Size reduction** | Config 1→3: 50.4 MB → 15.5 MB (**−69%**) |
+| **Dummy FPS gain** | Config 1→3: 96.5 → 116.7 FPS (**+20.9%**) |
+| **Video FPS gain** | Config 1→3: 80.7 → 101.4 FPS (**+25.6%**) |
+| **RTSP FPS gain** | Config 1→3: 33.03 → 34.33 FPS (**+3.9%**) |
+| **Frame diff (Config 4)** | Real RTSP: 33.03 → 23.82 FPS (**−27.9%**) — TRT pose bilan ham xuddi shu natija |
+| **Frame diff video** | 60% skip → 70.9 FPS (yaxshi ko'rinadi), lekin faqat 80 "qiyin" frame o'lchandi |
+| **Frame diff: PT vs TRT** | RTSP da farq yo'q (23.84 PT ≈ 23.82 TRT) — bottleneck GPU emas, tarmoq |
+| **17kp vs 10kp accuracy** | Fall F1: 0.970 vs **0.992** · Fall Recall: 0.980 vs **1.000** |
+| **RTSP bottleneck** | Kamera ~8-9 FPS → GPU model tezligi stream FPS ga ta'sir qilmaydi |
 
-> Config E: model FPS +14.7% → stream FPS only +3.9%. GPU is not the bottleneck.
+---
 
-### Finding 3 — Frame Differencing Hurts Live RTSP
-
-| Source | FD Skip % | Result vs C |
-|--------|----------:|------------:|
-| Dummy black frame | 99.5% | invalid (1 frame) |
-| Real video (test2.mp4) | 60% | +3.4 FPS (better) |
-| **Real RTSP cameras** | **~10%** | **−9.25 FPS (−27.8%)** |
-
-> Frame differencing only helps when scenes are mostly static. Industrial safety cameras always have motion → adds CPU overhead with minimal skipping.
-
-### Finding 4 — 10kp Is Better for Fall Detection
-
-| | 10kp | 17kp |
-|--|:----:|:----:|
-| Trained on | UPFall custom 10kp dataset | COCO-style 17kp |
-| Relevant keypoints | All 10 used for fall | 17 includes eyes, ears, knees, ankles (noise) |
-| Fall F1 | **0.992** | 0.970 |
-| Fall Recall | **1.000** | 0.980 |
-| Pose FPS (TRT) | **209** | 200 |
-
-### Finding 5 — Bug Fixed: 17kp Keypoint Mapping
+## Why RTSP FPS Barely Changes Despite GPU Speedup
 
 ```
-BEFORE (wrong):  keypoints_xy[:10]
-→ extracts: nose, left_eye, right_eye, left_ear, right_ear, ...
-→ TCN receives face keypoints instead of body keypoints
-
-AFTER (correct): explicit COCO→custom10kp remap
-→ nose, l_shoulder, r_shoulder, l_elbow, r_elbow,
-   l_wrist, r_wrist, l_hip, r_hip, neck(midpoint)
+Config 1 dummy:  96.5 FPS  │  Config 1 RTSP: 33.03 FPS
+Config 3 dummy: 116.7 FPS  │  Config 3 RTSP: 34.33 FPS
+                 +20.9%    │                  +3.9%
 ```
 
----
+**3 bottleneck:**
+1. RTSP camera → ~8–9 FPS per camera (network limit)
+2. 33 FPS hard cap in `streaming_manager.py` (`now - last_frame_time < 0.03`)
+3. Alternating inference: Pose every 2nd frame, PPE every 3rd frame
 
-## 8. Final Recommendation
-
-**Config E** — optimal for real-time industrial safety monitoring:
-
-| | Value |
-|--|------:|
-| PPE model | `unify-29march.engine` (TRT FP16, 7.9 MB) |
-| Pose model | `yolo11n-10kp.engine` (TRT FP16, ~7 MB) |
-| Model FPS | **95.0 FPS** (real video) / **102.4 FPS** (dummy) |
-| Stream FPS (4 cam) | **34.33 FPS** |
-| Fall Accuracy | **99.21%** |
-| Fall Recall | **1.000** (zero missed falls) |
+> GPU is never the bottleneck in live streaming. Model speed matters for **latency per detection**, not for stream FPS.
