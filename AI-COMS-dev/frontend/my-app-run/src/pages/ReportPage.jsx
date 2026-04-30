@@ -44,6 +44,19 @@ const ReportPage = () => {
   // Data from custom hook
   const { data, loading, error, sending, sendAlerts, downloadPDF } = useReportData();
 
+  // Initial full-page load (no data yet)
+  if (loading && data.length === 0 && !error) {
+    return (
+      <div className="search-results-page d-flex justify-content-center align-items-center" style={{ minHeight: "70vh" }}>
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Filter data by search query and date range
   const filteredData = data.filter((item) => {
     const matchesSearch =
@@ -101,6 +114,14 @@ const ReportPage = () => {
 
   return (
     <div className="search-results-page">
+      {/* Refresh overlay — shown when re-fetching while data already exists */}
+      {loading && data.length > 0 && (
+        <div className="page-loading-overlay">
+          <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
       <ReportHeader
         startDate={startDate}
         endDate={endDate}

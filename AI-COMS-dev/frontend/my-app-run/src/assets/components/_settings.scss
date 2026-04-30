@@ -10,7 +10,7 @@ h2 {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 2rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 /* Style for the Dark Mode Toggle */
@@ -79,9 +79,10 @@ input:checked + .slider:before {
 .toggle-camera-btn {
   padding: 10px 20px;
   border-radius: 12px;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
   font-weight: 500;
+  border: 1px solid var(--border-color);
   transition: all 0.3s ease-in-out;
 
   &:hover {
@@ -90,23 +91,23 @@ input:checked + .slider:before {
 }
 
 .camera-settings {
-  background-color: #ffffffe7;
+  background-color: var(--bg-card);
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  max-width: 600px;  /* Kenglikni kichraytirish */
+  box-shadow: 0 4px 10px var(--shadow-color);
+  max-width: 600px;
 
   .camera-item {
     margin-bottom: 1.5rem;
     padding: 15px;
-    background-color: variables.$secondary-color;
+    background-color: var(--bg-alert-item);
     border-radius: 8px;
     transition: background-color 0.3s ease;
-    gap: 10px; /* O'rtadagi bo'shliqni yaxshilash */
+    gap: 10px;
 
     .camera-label {
       font-weight: 500;
-      color: #444;
+      color: var(--text-primary);
     }
 
     .input-group {

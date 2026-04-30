@@ -1,7 +1,9 @@
+import os
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import FileResponse
+from django.conf import settings
 from io import BytesIO
 from django.utils.dateparse import parse_datetime
 from reportlab.lib.pagesizes import A4
@@ -13,8 +15,9 @@ from reportlab.lib.styles import getSampleStyleSheet
 from .models import Report
 from datetime import datetime
 
-# ✅ Register Korean font (NanumGothic)
-pdfmetrics.registerFont(TTFont('NanumGothic', 'assets/fonts/NanumGothic-Regular.ttf'))
+# ✅ Register Korean font (NanumGothic) using absolute path
+_FONT_PATH = os.path.join(settings.BASE_DIR, 'assets', 'fonts', 'NanumGothic-Regular.ttf')
+pdfmetrics.registerFont(TTFont('NanumGothic', _FONT_PATH))
 
 class GeneratePDFReportView(APIView):
     def post(self, request):

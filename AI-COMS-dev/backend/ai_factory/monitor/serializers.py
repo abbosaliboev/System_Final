@@ -14,6 +14,17 @@ class DangerZoneSerializer(serializers.ModelSerializer):
 
 
 class AlertSerializer(serializers.ModelSerializer):
+    frame_image_url = serializers.SerializerMethodField()
+
+    def get_frame_image_url(self, obj):
+        if not obj.frame_image:
+            return None
+        request = self.context.get('request')
+        if request:
+            return request.build_absolute_uri(obj.frame_image.url)
+        # Fallback: prepend backend host
+        return f"http://127.0.0.1:8000{obj.frame_image.url}"
+
     class Meta:
         model = Alert
         fields = '__all__'

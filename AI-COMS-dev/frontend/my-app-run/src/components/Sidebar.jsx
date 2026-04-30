@@ -29,15 +29,8 @@ const Sidebar = ({ toggleSidebar, setActivePage }) => {
 
   const handleMenuClick = (item) => {
     setActiveItem(item.key);
-    setActivePage(t(item.labelKey)); // Update active page with translated label
-    toggleSidebar(false); // close sidebar on mobile
-    
-    // Force full page reload for Timeline to ensure images load properly
-    if (item.key === "timeline") {
-      window.location.href = item.path;
-      return;
-    }
-    
+    setActivePage(t(item.labelKey));
+    toggleSidebar(false);
     navigate(item.path);
   };
 

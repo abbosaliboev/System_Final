@@ -128,10 +128,33 @@ class FallDetector:
         Returns:
             tuple: (label, confidence, draw_info) or (None, 0.0, None) if buffer not full
         """
-        # Handle 17 keypoints -> extract first 10
+        # Handle 17 keypoints -> remap to 10kp custom indices
+        # COCO 17kp: 0=nose,1=l_eye,2=r_eye,3=l_ear,4=r_ear,
+        #            5=l_sho,6=r_sho,7=l_elb,8=r_elb,9=l_wri,10=r_wri,
+        #            11=l_hip,12=r_hip,13=l_knee,14=r_knee,15=l_ank,16=r_ank
+        # Custom 10kp: 0=nose,1=l_sho,2=r_sho,3=l_elb,4=r_elb,
+        #              5=l_wri,6=r_wri,7=l_hip,8=r_hip,9=neck
         if len(keypoints_xy) == 17:
-            keypoints_xy = keypoints_xy[:10]
-            keypoints_conf = keypoints_conf[:10]
+            kp17 = keypoints_xy
+            cf17 = keypoints_conf
+            neck = (kp17[5] + kp17[6]) / 2.0
+            neck_conf = min(float(cf17[5]), float(cf17[6]))
+            keypoints_xy = np.array([
+                kp17[0],   # nose
+                kp17[5],   # left_shoulder
+                kp17[6],   # right_shoulder
+                kp17[7],   # left_elbow
+                kp17[8],   # right_elbow
+                kp17[9],   # left_wrist
+                kp17[10],  # right_wrist
+                kp17[11],  # left_hip
+                kp17[12],  # right_hip
+                neck,      # neck (shoulder midpoint)
+            ], dtype=float)
+            keypoints_conf = np.array([
+                cf17[0], cf17[5], cf17[6], cf17[7], cf17[8],
+                cf17[9], cf17[10], cf17[11], cf17[12], neck_conf,
+            ], dtype=float)
         
         # Normalize keypoints
         try:

@@ -29,7 +29,7 @@ export const useReportData = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const apiData = await response.json();
-        
+
         // Map API data to table format
         const mapped = apiData.map((item) => ({
           id: item.workerId || item.id,
@@ -54,6 +54,15 @@ export const useReportData = () => {
     };
 
     fetchReports();
+
+    // Listen for navbar refresh button events (only trigger on this page)
+    const onAppRefresh = (e) => {
+      const targetPath = e?.detail?.path;
+      if (targetPath && targetPath !== window.location.pathname) return;
+      fetchReports();
+    };
+    window.addEventListener("app:refresh", onAppRefresh);
+    return () => window.removeEventListener("app:refresh", onAppRefresh);
   }, []);
 
   // Update report statuses after sending alerts

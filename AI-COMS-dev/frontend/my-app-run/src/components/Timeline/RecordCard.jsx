@@ -7,8 +7,20 @@ import "./_recordCard.scss";
 /**
  * RecordCard - Individual record/alert card component
  */
+const BACKEND = "http://127.0.0.1:8000";
+
+// Returns an absolute image URL — handles null, relative, and absolute cases
+const resolveImageSrc = (record) => {
+  const raw = record.frame_image_url || record.frame_image || record.frame_url;
+  if (!raw) return null;
+  if (raw.startsWith("http")) return raw;
+  if (raw.startsWith("/")) return `${BACKEND}${raw}`;
+  return `${BACKEND}/${raw}`;
+};
+
 const RecordCard = ({ record, onRecordClick, onDeleteClick }) => {
   const { t } = useTranslation();
+  const imageSrc = resolveImageSrc(record);
 
   const handleRootClick = () => {
     if (typeof onRecordClick === "function") {
@@ -47,7 +59,7 @@ const RecordCard = ({ record, onRecordClick, onDeleteClick }) => {
       <div className="d-flex align-items-center card-in">
         {/* Image */}
         <img
-          src={record.frame_image || sampleImage}
+          src={imageSrc || sampleImage}
           alt="Alert frame"
           className="record-image me-3"
           onError={(e) => {

@@ -98,6 +98,14 @@ const TimelinePage = () => {
 
   return (
     <div className="container-fluid timeline-page p-4">
+      {/* Refresh overlay — shown when re-fetching after initial load */}
+      {loading && fetched && (
+        <div className="page-loading-overlay">
+          <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
       <div className="row">
         <AlertsList
           alerts={sortedAlerts}

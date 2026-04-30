@@ -21,6 +21,10 @@ from .visualization import (
     smooth_ppe_detections, draw_person_visualization,
     compute_status, send_frame_to_queue
 )
+from monitor.frame_differencing import frame_differencing
+
+# Frame differencing toggle — True = skip inference on static frames
+USE_FRAME_DIFFERENCING = False
 
 os.environ.pop("OPENCV_FFMPEG_CAPTURE_OPTIONS", None)
 
@@ -69,6 +73,9 @@ def camera_process(cam_list, camera_results, frame_queues=None):
     # P2: Single thread pool created once — reused every frame, no per-frame Thread()
     executor = ThreadPoolExecutor(max_workers=2)
 
+    # Config D: per-camera previous frame for frame differencing
+    prev_frames = {cam["id"]: None for cam in cam_list}
+
     # Parallel inference helpers (closures capture CUDA streams from above)
     def _run_ppe(out_box, model, frame_):
         with torch.cuda.stream(detect_stream):
@@ -108,6 +115,17 @@ def camera_process(cam_list, camera_results, frame_queues=None):
 
             ppe = state.last_ppe[cam_id]
             poses = state.last_pose[cam_id]
+
+            # Config D: Frame differencing — skip inference on static frames
+            if USE_FRAME_DIFFERENCING and prev_frames[cam_id] is not None:
+                if not frame_differencing(cam_id, frame, prev_frames[cam_id]):
+                    prev_frames[cam_id] = frame
+                    # Send cached frame to frontend (visualization stays same)
+                    send_frame_to_queue(frame, frame_queues, cam_id)
+                    state.cam_counts[cam_id] += 1
+                    state.min_counts[cam_id] += 1
+                    continue  # skip inference
+            prev_frames[cam_id] = frame
 
             # Run inference
             if run_ppe and run_pose:

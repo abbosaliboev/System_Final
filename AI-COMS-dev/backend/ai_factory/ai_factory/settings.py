@@ -47,8 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  
-    'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -140,10 +139,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ####################### EMAIL NotiFY #################
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #Dev Mode
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Dev mode
+DEFAULT_FROM_EMAIL = 'noreply@aicoms.local'
 
 #               <<< PRODUCTION >>>
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.yourprovider.com'
 # EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'your@email.com'

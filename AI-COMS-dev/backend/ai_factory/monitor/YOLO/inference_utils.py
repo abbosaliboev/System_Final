@@ -45,8 +45,9 @@ def load_models():
 
     # ── Pose model ─────────────────────────────────────────────
     pose_model_paths = [
-        ("monitor/YOLO/models/yolo11n-10kp.pt",  'pose'),   # 10 keypoint model
-        ("monitor/YOLO/models/best_pose.engine", 'pose'),   # 17 keypoint TensorRT fallback
+        ("monitor/YOLO/models/yolo11n-10kp.engine", 'pose'),  # NEW — TRT FP16
+        ("monitor/YOLO/models/yolo11n-10kp.pt",     'pose'),  # PT fallback
+        ("monitor/YOLO/models/best_pose.engine",     'pose'),  # 17kp fallback
     ]
     pose_model = None
     for path, task in pose_model_paths:
@@ -125,16 +126,26 @@ def frame_grabber(cam_id, url, frame_queue):
     max_retry_delay = 10.0
     
     while True:
-        cap = cv2.VideoCapture(url, cv2.CAP_FFMPEG)
+        # Set 5-second connection timeout via FFMPEG options before opening
+        cap = cv2.VideoCapture()
+        cap.open(
+            url,
+            cv2.CAP_FFMPEG,
+            params=[
+                cv2.CAP_PROP_OPEN_TIMEOUT_MSEC, 5000,   # 5s connect timeout
+                cv2.CAP_PROP_READ_TIMEOUT_MSEC,  5000,   # 5s read timeout
+            ]
+        )
         cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         cap.set(cv2.CAP_PROP_HW_ACCELERATION, cv2.VIDEO_ACCELERATION_ANY)
-        
+
         if not cap.isOpened():
-            print(f"[{cam_id}] Failed to open stream. Retrying in {retry_delay}s...")
+            print(f"[{cam_id}] Failed to open stream {url}. Retrying in {retry_delay}s...")
+            cap.release()
             time.sleep(retry_delay)
             retry_delay = min(retry_delay * 1.5, max_retry_delay)
             continue
-        
+
         retry_delay = 2.0
         print(f"[{cam_id}] Stream connected successfully")
         
